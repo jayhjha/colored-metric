@@ -1,0 +1,3 @@
+<div class="coloredMetric" ng-controller="ColoredMetricController"> 
+    <span ng-class="{'color-red': value >= vis.params.redThreshold, 'color-orange': value < vis.params.redThreshold && value > vis.params.greenThreshold, 'color-green': value <= vis.params.greenThreshold}" ng-style="{'font-size': vis.params.fontSize+'px'}">{{value}}</span>
+</div>

@@ -1,2 +1,2 @@
-# coloured-metric
-Kibana Plugin for Coloured Metric Visualization
+# colored-metric
+Kibana Plugin for Colored Metric Visualization
