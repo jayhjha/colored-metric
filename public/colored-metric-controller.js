@@ -22,7 +22,7 @@ define(function (require) {
                 title = ( !$scope.vis.params.metricTitle ) ? $scope.metrics[0].label : $scope.vis.params.metricTitle;
                 value = $scope.metrics[0].value
                 $scope.title = title;
-                $scope.value = value
+                $scope.value = value.toFixed(2)
             }
         });
     });

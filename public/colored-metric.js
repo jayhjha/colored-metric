@@ -19,7 +19,8 @@ define(function(require) {
                     metricTitle: null,
                     fontSize: 60,
                     redThreshold: 20,
-                    greenThreshold: 5
+                    greenThreshold: 5,
+                    invertScale: null
                 },
                 editor: require('plugins/colored-metric/colored-metric-editor.html')
             },
