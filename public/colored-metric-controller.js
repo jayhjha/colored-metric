@@ -25,5 +25,15 @@ define(function (require) {
                 $scope.value = value.toFixed(2)
             }
         });
+
+        $scope.selectColor = function() {
+            if ($scope.value <= $scope.vis.params.firstThresholdValue) {
+                return $scope.vis.params.firstThresholdColor;
+            } else if ($scope.value > $scope.vis.params.firstThresholdValue && $scope.value < $scope.vis.params.secThresholdValue) {
+                return $scope.vis.params.betweenTwoThresholdsColor;
+            } else if ($scope.value >= $scope.vis.params.secThresholdValue) {
+                return $scope.vis.params.secThresholdColor;
+            }
+        }
     });
 });

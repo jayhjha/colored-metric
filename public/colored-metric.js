@@ -18,9 +18,11 @@ define(function(require) {
                 defaults: {
                     metricTitle: null,
                     fontSize: 60,
-                    redThreshold: 20,
-                    greenThreshold: 5,
-                    invertScale: null
+                    firstThresholdValue: 5,
+                    secThresholdValue: 20,
+                    firstThresholdColor: 'green',
+                    betweenTwoThresholdsColor: 'orange',
+                    secThresholdColor: 'red'
                 },
                 editor: require('plugins/colored-metric/colored-metric-editor.html')
             },

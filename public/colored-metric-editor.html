@@ -7,16 +7,16 @@
     <input type="range" ng-model="vis.params.fontSize" class="form-control"/>
 </div>
 <div class="form-group">
-    <label> Red Threshold </label>
-    <input type="number" ng-model="vis.params.redThreshold" class="form-control"/>
+    <label> First Threshold </label>
+    <input type="text" ng-model="vis.params.firstThresholdColor" class="form-control"/>
+    <input type="number" ng-model="vis.params.firstThresholdValue" class="form-control"/>
 </div>
 <div class="form-group">
-    <label> Green Threshold </label>
-    <input type="number" ng-model="vis.params.greenThreshold" class="form-control"/>
+    <label> Between Thresholds </label>
+    <input type="text" ng-model="vis.params.betweenTwoThresholdsColor" class="form-control"/>
 </div>
 <div class="form-group">
-    <label>
-        <input type="checkbox" ng-model="vis.params.invertScale"/>
-        Invert Scale
-    </label>
+    <label> Second Threshold </label>
+    <input type="text" ng-model="vis.params.secThresholdColor" class="form-control"/>
+    <input type="number" ng-model="vis.params.secThresholdValue" class="form-control"/>
 </div>
