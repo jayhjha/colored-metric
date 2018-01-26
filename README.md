@@ -1,4 +1,4 @@
-# colored-metric (v.5.4.2)
+# colored-metric (v.6.x.x)
 Kibana Plugin for Colored Metric Visualization
 
 # How it works

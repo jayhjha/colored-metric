@@ -1,4 +1,6 @@
 {
     "name": "colored-metric",
-    "version": "5.4.2"
-}
+    "version": "kibana",
+    "description": "Colored Metric",
+    "main": "index.js"
+  }

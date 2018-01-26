@@ -1,39 +1,62 @@
-define(function (require) {
-    var module = require('ui/modules').get('kibana/colored-metric', ['kibana']);
+class ColoredMetricController {
+    constructor(el, vis) {
+      this.el = el;
+      this.vis = vis;
+      this.container = document.createElement('div');
+      this.container.className = 'coloredMetric';
+      this.el.appendChild(this.container);
+      this.metricValue = null;
+    }
 
-    module.controller('ColoredMetricController', function($scope, Private) {
-        var tabifyAggResponse = Private(require('ui/agg_response/tabify/tabify'));
-        var metrics = $scope.metrics = [];
-        var title = null;
-
-        $scope.processTableGroups = function (tableGroups) {
-            tableGroups.tables.forEach(function (table) {
-            table.columns.forEach(function (column, i) {
-                var fieldFormatter = table.aggConfig(column).fieldFormatter();
-                    metrics[0] = {label: column.title, value: table.rows[0][i]};	
-                });
-            });
-        };
-
-        $scope.$watch('esResponse', function (resp) {
-            if (resp) {
-                metrics.length = 0;
-                $scope.processTableGroups(tabifyAggResponse($scope.vis, resp));
-                title = ( !$scope.vis.params.metricTitle ) ? $scope.metrics[0].label : $scope.vis.params.metricTitle;
-                value = $scope.metrics[0].value
-                $scope.title = title;
-                $scope.value = value.toFixed(2)
-            }
+    getColor() {
+      if (this.metricValue <= this.vis.params.firstThresholdValue) {
+        return this.vis.params.firstThresholdColor;
+      } else if (this.metricValue > this.vis.params.firstThresholdValue && this.metricValue < this.vis.params.secThresholdValue) {
+        return this.vis.params.betweenTwoThresholdsColor;
+      } else if (this.metricValue >= this.vis.params.secThresholdValue) {
+        return this.vis.params.secThresholdColor;
+      }
+    }
+  
+    render(visData, status) {
+      this.container.innerHTML = '';
+      const table = visData.tables[0];
+      const metrics = [];
+      let bucketAgg;
+  
+      table.columns.forEach((column, i) => {
+        table.rows.forEach(row => {
+          const value = row[i];
+          metrics.push({
+            title: bucketAgg ? `${row[0]} ${column.title}` : column.title,
+            value: row[i],
+            formattedValue: column.aggConfig ? column.aggConfig.fieldFormatter('text')(value) : value,
+            bucketValue: bucketAgg ? row[0] : null,
+            aggConfig: column.aggConfig
+          });
         });
+      });
+  
+      metrics.forEach(metric => {
+        const metricDiv = document.createElement(`div`);
+        metricDiv.className = `coloredMetric`;
+        metricDiv.innerHTML = `${metric.formattedValue}`;
+        metricDiv.setAttribute('style', `font-size: ${this.vis.params.fontSize}pt; color: ${this.getColor()}`);
+  
+        this.container.appendChild(metricDiv);
+        this.metricValue = metric.formattedValue;
+      });
+      
+      return new Promise(resolve => {
+        resolve('Done rendering');
+      });
+    }
+  
+    destroy() {
+      this.el.innerHTML = '';
+      console.log('Destroying');
+    }
+  };
 
-        $scope.selectColor = function() {
-            if ($scope.value <= $scope.vis.params.firstThresholdValue) {
-                return $scope.vis.params.firstThresholdColor;
-            } else if ($scope.value > $scope.vis.params.firstThresholdValue && $scope.value < $scope.vis.params.secThresholdValue) {
-                return $scope.vis.params.betweenTwoThresholdsColor;
-            } else if ($scope.value >= $scope.vis.params.secThresholdValue) {
-                return $scope.vis.params.secThresholdColor;
-            }
-        }
-    });
-});
+  export { ColoredMetricController };
+  
