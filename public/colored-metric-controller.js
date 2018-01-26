@@ -1,39 +1,46 @@
-define(function (require) {
-    var module = require('ui/modules').get('kibana/colored-metric', ['kibana']);
+import { VisSchemasProvider } from 'ui/vis/schemas';
+import { TemplateVisTypeProvider } from 'ui/template_vis_type/template_vis_type';
+import { VisTypesRegistryProvider } from 'ui/registry/vis_types';
 
-    module.controller('ColoredMetricController', function($scope, Private) {
-        var tabifyAggResponse = Private(require('ui/agg_response/tabify/tabify'));
-        var metrics = $scope.metrics = [];
-        var title = null;
+import 'plugins/colored-metric/colored-metric.css';
+import 'plugins/colored-metric/colored-metric-controller';
 
-        $scope.processTableGroups = function (tableGroups) {
-            tableGroups.tables.forEach(function (table) {
-            table.columns.forEach(function (column, i) {
-                var fieldFormatter = table.aggConfig(column).fieldFormatter();
-                    metrics[0] = {label: column.title, value: table.rows[0][i]};	
-                });
-            });
-        };
+VisTypesRegistryProvider.register(function ColoredMetricProvider(Private) {
+  var TemplateVisType = Private(TemplateVisTypeProvider);
+  var Schemas = Private(VisSchemasProvider);
 
-        $scope.$watch('esResponse', function (resp) {
-            if (resp) {
-                metrics.length = 0;
-                $scope.processTableGroups(tabifyAggResponse($scope.vis, resp));
-                title = ( !$scope.vis.params.metricTitle ) ? $scope.metrics[0].label : $scope.vis.params.metricTitle;
-                value = $scope.metrics[0].value
-                $scope.title = title;
-                $scope.value = value.toFixed(2)
-            }
-        });
-
-        $scope.selectColor = function() {
-            if ($scope.value <= $scope.vis.params.firstThresholdValue) {
-                return $scope.vis.params.firstThresholdColor;
-            } else if ($scope.value > $scope.vis.params.firstThresholdValue && $scope.value < $scope.vis.params.secThresholdValue) {
-                return $scope.vis.params.betweenTwoThresholdsColor;
-            } else if ($scope.value >= $scope.vis.params.secThresholdValue) {
-                return $scope.vis.params.secThresholdColor;
-            }
-        }
-    });
+  return new TemplateVisType({
+    name: 'coloredMetric',
+    title: 'ColoredMetric',
+    icon: 'fa-square',
+    description: 'Add colored metric to your dashboard',
+    template: require('plugins/colored-metric/colored-metric.html'),
+    params: {
+      defaults: {
+          metricTitle: null,
+          fontSize: 60,
+          firstThresholdValue: 5,
+          secThresholdValue: 20,
+          firstThresholdColor: 'green',
+          betweenTwoThresholdsColor: 'orange',
+          secThresholdColor: 'red'
+      },
+      editor: require('plugins/colored-metric/colored-metric-editor.html')
+    },
+    hierarchicalData: function (vis) {
+      return Boolean(true);
+    },
+    schemas: new Schemas([
+      {
+        group: 'metrics',
+        name: 'metric',
+        title: 'Metric',
+        min: 1,
+        max: 1,
+        defaults: [
+          { type: 'count', schema: 'metric' }
+        ]
+      }
+    ])
+  });
 });
