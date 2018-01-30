@@ -4,7 +4,6 @@ import { VisTypesRegistryProvider } from 'ui/registry/vis_types';
 import { VisSchemasProvider } from 'ui/vis/editors/default/schemas';
 
 import './colored-metric.css';
-import template from './colored-metric.html';
 import optionsTemplate from './colored-metric-editor.html';
 import { ColoredMetricController } from './colored-metric-controller';
 
