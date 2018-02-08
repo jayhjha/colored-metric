@@ -3,9 +3,9 @@ import { VisFactoryProvider } from 'ui/vis/vis_factory';
 import { VisTypesRegistryProvider } from 'ui/registry/vis_types';
 import { VisSchemasProvider } from 'ui/vis/editors/default/schemas';
 
-import './colored-metric.css';
-import optionsTemplate from './colored-metric-editor.html';
-import { ColoredMetricController } from './colored-metric-controller';
+import './colored_metric.less';
+import optionsTemplate from './colored_metric_editor.html';
+import { ColoredMetricController } from './colored_metric_controller';
 
 
 const ColoredMetricVisualization = (Private) => {
